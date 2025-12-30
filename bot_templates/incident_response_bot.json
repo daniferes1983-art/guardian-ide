@@ -1,0 +1,217 @@
+{
+  "template_info": {
+    "id": "incident_response_bot",
+    "name": "Bot de Respuesta a Incidentes",
+    "description": "Bot automatizado para la respuesta rápida a incidentes de seguridad, incluyendo contención, análisis forense básico y recuperación del sistema.",
+    "category": "incident_response",
+    "difficulty": "advanced",
+    "version": "1.0.0",
+    "author": "Guardián AI",
+    "tags": ["incident", "response", "forensics", "containment", "recovery"]
+  },
+  "parameters": {
+    "bot_name": {
+      "type": "string",
+      "description": "Nombre identificativo del bot",
+      "default": "Respondedor de Incidentes",
+      "required": true,
+      "ai_question": "¿Cómo quieres llamar a tu bot de respuesta a incidentes?",
+      "ai_suggestions": ["Respondedor de Incidentes", "Equipo de Emergencia", "Defensor Automático", "Guardián de Crisis"]
+    },
+    "severity_threshold": {
+      "type": "string",
+      "description": "Nivel mínimo de severidad para activar respuesta automática",
+      "default": "alto",
+      "required": true,
+      "validation": {
+        "enum": ["bajo", "medio", "alto", "critico"]
+      },
+      "ai_question": "¿A partir de qué nivel de severidad debe activarse la respuesta automática?",
+      "ai_suggestions": ["medio (más proactivo)", "alto (balanceado)", "crítico (solo emergencias)"]
+    },
+    "critical_directories": {
+      "type": "array",
+      "description": "Directorios críticos a proteger y analizar",
+      "default": ["/etc", "/bin", "/sbin", "/var/log"],
+      "required": true,
+      "ai_question": "¿Qué directorios consideras críticos y deben ser protegidos prioritariamente?",
+      "ai_suggestions": ["Directorios del sistema (/etc, /bin)", "Logs de aplicaciones (/var/log)", "Datos de usuario (/home)", "Configuraciones de servicios"]
+    },
+    "containment_strategy": {
+      "type": "string",
+      "description": "Estrategia de contención ante incidentes",
+      "default": "aislar",
+      "required": true,
+      "validation": {
+        "enum": ["aislar", "bloquear", "monitorear", "alertar_solo"]
+      },
+      "ai_question": "¿Qué estrategia de contención prefieres cuando se detecta un incidente?",
+      "ai_suggestions": ["aislar (más seguro)", "bloquear (específico)", "monitorear (observar)", "alertar solo (manual)"]
+    },
+    "auto_recovery": {
+      "type": "boolean",
+      "description": "Habilitar recuperación automática del sistema",
+      "default": false,
+      "required": true,
+      "ai_question": "¿Deseas que el bot intente recuperar automáticamente el sistema después de un incidente?",
+      "ai_suggestions": ["Sí (más automatizado)", "No (control manual)"]
+    },
+    "backup_point": {
+      "type": "string",
+      "description": "Punto de respaldo para recuperación",
+      "default": "ultimo_estable",
+      "required": false,
+      "ai_question": "Si habilitas la recuperación automática, ¿qué punto de respaldo usar?",
+      "ai_suggestions": ["último estable", "respaldo diario", "respaldo semanal"]
+    }
+  },
+  "components": [
+    {
+      "id": "incident_detector",
+      "type": "DETECCION_INCIDENTES",
+      "name": "Detector de Incidentes",
+      "description": "Componente que detecta incidentes de seguridad basándose en alertas y patrones",
+      "config": {
+        "nivel_minimo": "{severity_threshold}",
+        "fuentes": ["firewall_logs", "system_logs", "network_alerts"],
+        "patrones_sospechosos": ["multiple_failed_logins", "unusual_network_activity", "file_modifications"]
+      },
+      "dependencies": ["re", "datetime"],
+      "guardian_commands": ["leer logs de /var/log/auth.log", "analizar amenazas en tiempo real"],
+      "security_validations": ["validate_log_access", "check_pattern_safety"]
+    },
+    {
+      "id": "containment_system",
+      "type": "CONTENCION",
+      "name": "Sistema de Contención",
+      "description": "Componente que ejecuta acciones de contención para limitar el impacto del incidente",
+      "config": {
+        "accion": "{containment_strategy}",
+        "directorios_criticos": "{critical_directories}",
+        "tiempo_maximo": "30m"
+      },
+      "dependencies": ["subprocess"],
+      "guardian_commands": ["crear regla firewall", "alertar"],
+      "security_validations": ["prevent_system_lockout", "validate_containment_scope"]
+    },
+    {
+      "id": "forensic_analyzer",
+      "type": "ANALISIS_FORENSE",
+      "name": "Analizador Forense",
+      "description": "Componente que realiza análisis forense básico para determinar el alcance del incidente",
+      "config": {
+        "directorios": "{critical_directories}",
+        "profundidad": "basica",
+        "preservar_evidencia": true
+      },
+      "dependencies": ["hashlib", "os"],
+      "guardian_commands": ["leer logs", "ver procesos"],
+      "security_validations": ["preserve_evidence_integrity", "limit_analysis_scope"]
+    },
+    {
+      "id": "recovery_system",
+      "type": "RECUPERACION",
+      "name": "Sistema de Recuperación",
+      "description": "Componente que maneja la recuperación del sistema después del incidente",
+      "config": {
+        "punto_restauracion": "{backup_point}",
+        "auto_recovery": "{auto_recovery}",
+        "verificacion_integridad": true
+      },
+      "dependencies": ["shutil"],
+      "guardian_commands": ["alertar"],
+      "security_validations": ["verify_backup_integrity", "confirm_recovery_safety"]
+    }
+  ],
+  "triggers": [
+    {
+      "type": "DETECCION_ALERTA",
+      "config": {
+        "nivel_minimo": "{severity_threshold}"
+      },
+      "condition": "alert_severity >= {severity_threshold}"
+    },
+    {
+      "type": "ACTIVIDAD_SOSPECHOSA",
+      "config": {
+        "patrones": ["multiple_failed_logins", "unusual_file_access", "network_anomaly"]
+      },
+      "condition": "suspicious_pattern_detected"
+    }
+  ],
+  "code_template": "# Bot de Respuesta a Incidentes: {bot_name}\n# Generado automáticamente por Guardián AI\n\n# Configuración del bot\ncrear bot {bot_name}\n    con nivel: \"{severity_threshold}\"\n    directorios_criticos: {critical_directories}\n    estrategia_contencion: \"{containment_strategy}\"\n    recuperacion_auto: {auto_recovery}\n\n# Función principal de respuesta\nfuncion responder_incidente(tipo_incidente, severidad):\n    # Paso 1: Detección y evaluación\n    si severidad >= \"{severity_threshold}\" entonces\n        alertar \"Incidente detectado: \" + tipo_incidente + \" - Severidad: \" + severidad nivel: critico\n        \n        # Paso 2: Contención\n        si \"{containment_strategy}\" == \"aislar\" entonces\n            # Aislar sistema comprometido\n            crear regla firewall puerto: * protocolo: * accion: bloquear\n            alertar \"Sistema aislado por incidente de seguridad\" nivel: alto\n        sino si \"{containment_strategy}\" == \"bloquear\" entonces\n            # Bloquear origen específico\n            crear regla firewall puerto: * protocolo: * accion: bloquear origen: ip_sospechosa\n        fin si\n        \n        # Paso 3: Análisis forense básico\n        leer logs de /var/log/auth.log\n        leer logs de /var/log/syslog\n        ver procesos\n        \n        # Verificar integridad de directorios críticos\n        para cada directorio en {critical_directories}:\n            verificar_integridad(directorio)\n        fin para\n        \n        # Paso 4: Recuperación (si está habilitada)\n        si {auto_recovery} entonces\n            si punto_respaldo_disponible(\"{backup_point}\") entonces\n                alertar \"Iniciando recuperación automática desde {backup_point}\" nivel: info\n                restaurar_desde_respaldo(\"{backup_point}\")\n                verificar_integridad_sistema()\n                alertar \"Recuperación automática completada\" nivel: info\n            sino\n                alertar \"Recuperación automática fallida: respaldo no disponible\" nivel: alto\n            fin si\n        sino\n            alertar \"Incidente contenido. Recuperación manual requerida\" nivel: medio\n        fin si\n        \n        # Paso 5: Reporte final\n        generar_reporte_incidente(tipo_incidente, severidad, acciones_tomadas)\n    fin si\nfin funcion\n\n# Monitoreo continuo de incidentes\nrepetir mientras activo:\n    # Monitorear alertas del sistema\n    analizar amenazas en tiempo real en eth0\n    \n    # Verificar logs de seguridad\n    leer logs de /var/log/auth.log\n    \n    # Si se detecta actividad sospechosa\n    si actividad_sospechosa_detectada entonces\n        responder_incidente(tipo_actividad, nivel_severidad)\n    fin si\n    \n    esperar 30 segundos\nfin repetir",
+  "ai_prompts": {
+    "initial_question": "¡Perfecto! Vamos a crear un bot de respuesta a incidentes que actuará como tu equipo de emergencia automatizado. Este bot detectará incidentes de seguridad y responderá automáticamente para minimizar el daño. ¿Comenzamos?",
+    "follow_up_questions": [
+      "Considerando tu configuración, ¿te gustaría que el bot también monitoree cambios en archivos de configuración críticos?",
+      "Para mejorar la respuesta, ¿hay algún sistema o servicio específico que consideres más crítico que otros?",
+      "¿Deseas configurar notificaciones por email o SMS cuando ocurra un incidente grave?"
+    ],
+    "recommendations": [
+      "Para entornos de producción, recomiendo usar 'aislar' como estrategia de contención",
+      "La recuperación automática es útil pero puede ser riesgosa; considera empezar con 'false'",
+      "Incluir /var/log en directorios críticos es esencial para el análisis forense",
+      "Un umbral 'alto' evita respuestas excesivas a incidentes menores"
+    ],
+    "validation_prompts": [
+      "Verificando permisos de acceso a directorios críticos...",
+      "Validando que la estrategia de contención no cause bloqueo del sistema...",
+      "Comprobando disponibilidad de puntos de respaldo...",
+      "Asegurando que las acciones de recuperación son seguras..."
+    ]
+  },
+  "examples": [
+    {
+      "name": "Respuesta Básica para Servidor Web",
+      "description": "Configuración para un servidor web con respuesta conservadora",
+      "parameters": {
+        "bot_name": "Defensor Web",
+        "severity_threshold": "alto",
+        "critical_directories": ["/etc", "/var/www", "/var/log"],
+        "containment_strategy": "bloquear",
+        "auto_recovery": false
+      }
+    },
+    {
+      "name": "Respuesta Avanzada para Infraestructura Crítica",
+      "description": "Configuración robusta para infraestructura crítica con recuperación automática",
+      "parameters": {
+        "bot_name": "Guardián Crítico",
+        "severity_threshold": "medio",
+        "critical_directories": ["/etc", "/bin", "/sbin", "/var/log", "/opt/critical"],
+        "containment_strategy": "aislar",
+        "auto_recovery": true,
+        "backup_point": "ultimo_estable"
+      }
+    }
+  ],
+  "security_guidelines": [
+    "Nunca ejecutar recuperación automática sin verificar la integridad del respaldo",
+    "Mantener siempre un mecanismo de acceso de emergencia al sistema",
+    "Documentar todas las acciones automáticas para auditoría posterior",
+    "Validar que las acciones de contención no afecten servicios críticos",
+    "Implementar timeouts para evitar bucles infinitos en la respuesta"
+  ],
+  "testing_scenarios": [
+    {
+      "name": "Simulación de Intrusión",
+      "description": "Simula un intento de intrusión para verificar la respuesta del bot",
+      "input": {
+        "incident_type": "unauthorized_access",
+        "severity": "alto",
+        "affected_files": ["/etc/passwd"]
+      },
+      "expected_behavior": "El bot debe detectar el incidente, ejecutar contención y realizar análisis forense"
+    },
+    {
+      "name": "Incidente de Baja Severidad",
+      "description": "Verifica que incidentes menores no activen respuesta automática",
+      "input": {
+        "incident_type": "failed_login",
+        "severity": "bajo"
+      },
+      "expected_behavior": "El bot debe registrar el evento pero no ejecutar acciones de contención"
+    }
+  ]
+}
+

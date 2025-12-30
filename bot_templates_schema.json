@@ -1,0 +1,222 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Guardian Bot Template Schema",
+  "description": "Esquema para definir plantillas de bots de ciberseguridad en Guardián IDE",
+  "type": "object",
+  "properties": {
+    "template_info": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identificador único de la plantilla"
+        },
+        "name": {
+          "type": "string",
+          "description": "Nombre descriptivo de la plantilla"
+        },
+        "description": {
+          "type": "string",
+          "description": "Descripción detallada de la funcionalidad del bot"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["network_monitoring", "intrusion_detection", "incident_response", "endpoint_security", "compliance", "iot_protection"],
+          "description": "Categoría del bot"
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["beginner", "intermediate", "advanced"],
+          "description": "Nivel de dificultad de configuración"
+        },
+        "version": {
+          "type": "string",
+          "description": "Versión de la plantilla"
+        },
+        "author": {
+          "type": "string",
+          "description": "Autor de la plantilla"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Etiquetas para búsqueda y categorización"
+        }
+      },
+      "required": ["id", "name", "description", "category"]
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Parámetros configurables de la plantilla",
+      "patternProperties": {
+        "^[a-zA-Z_][a-zA-Z0-9_]*$": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["string", "integer", "float", "boolean", "array", "ip_address", "port", "interface", "file_path"]
+            },
+            "description": {
+              "type": "string"
+            },
+            "default": {},
+            "required": {
+              "type": "boolean",
+              "default": false
+            },
+            "validation": {
+              "type": "object",
+              "properties": {
+                "min": {"type": "number"},
+                "max": {"type": "number"},
+                "pattern": {"type": "string"},
+                "enum": {"type": "array"}
+              }
+            },
+            "ai_question": {
+              "type": "string",
+              "description": "Pregunta que la IA hará al usuario para este parámetro"
+            },
+            "ai_suggestions": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Sugerencias que la IA puede ofrecer"
+            }
+          },
+          "required": ["type", "description"]
+        }
+      }
+    },
+    "components": {
+      "type": "array",
+      "description": "Componentes modulares del bot",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identificador único del componente"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["MONITOREO_TRAFICO", "DETECCION_ATAQUES", "RESPUESTA_AUTOMATICA", "MONITOREO_ACCESOS", "ANALISIS_INTENTOS", "DETECCION_INCIDENTES", "CONTENCION", "ANALISIS_FORENSE", "RECUPERACION", "MONITOREO_PROCESOS", "MONITOREO_ARCHIVOS", "VERIFICACION_POLITICAS", "GENERACION_REPORTE", "MONITOREO_DISPOSITIVOS", "DETECCION_ANOMALIAS"]
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre descriptivo del componente"
+          },
+          "description": {
+            "type": "string",
+            "description": "Descripción de la funcionalidad del componente"
+          },
+          "config": {
+            "type": "object",
+            "description": "Configuración específica del componente"
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Dependencias de Python requeridas por este componente"
+          },
+          "guardian_commands": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Comandos de Guardián que utiliza este componente"
+          },
+          "security_validations": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Validaciones de seguridad que debe pasar este componente"
+          }
+        },
+        "required": ["id", "type", "name", "description"]
+      }
+    },
+    "triggers": {
+      "type": "array",
+      "description": "Activadores que inician la ejecución del bot",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["INICIO_SISTEMA", "DETECCION_ALERTA", "ACTIVIDAD_ARCHIVO", "PROGRAMADO", "NUEVO_PROCESO", "MODIFICACION_ARCHIVO", "ACTIVIDAD_DISPOSITIVO", "HORARIO", "ACTIVIDAD_SOSPECHOSA", "MANUAL"]
+          },
+          "config": {
+            "type": "object",
+            "description": "Configuración específica del activador"
+          },
+          "condition": {
+            "type": "string",
+            "description": "Condición que debe cumplirse para activar el bot"
+          }
+        },
+        "required": ["type"]
+      }
+    },
+    "code_template": {
+      "type": "string",
+      "description": "Plantilla de código en lenguaje Guardián con marcadores de posición"
+    },
+    "ai_prompts": {
+      "type": "object",
+      "description": "Prompts específicos para la IA durante la creación del bot",
+      "properties": {
+        "initial_question": {
+          "type": "string",
+          "description": "Pregunta inicial que la IA hace al usuario"
+        },
+        "follow_up_questions": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Preguntas de seguimiento basadas en las respuestas del usuario"
+        },
+        "recommendations": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Recomendaciones que la IA puede ofrecer"
+        },
+        "validation_prompts": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Prompts para validar la configuración del bot"
+        }
+      }
+    },
+    "examples": {
+      "type": "array",
+      "description": "Ejemplos de bots generados con esta plantilla",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "description": {"type": "string"},
+          "parameters": {"type": "object"},
+          "generated_code": {"type": "string"}
+        }
+      }
+    },
+    "security_guidelines": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Directrices de seguridad específicas para esta plantilla"
+    },
+    "testing_scenarios": {
+      "type": "array",
+      "description": "Escenarios de prueba para validar el bot",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "description": {"type": "string"},
+          "input": {"type": "object"},
+          "expected_behavior": {"type": "string"}
+        }
+      }
+    }
+  },
+  "required": ["template_info", "parameters", "components", "triggers", "code_template"]
+}
+

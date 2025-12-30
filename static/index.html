@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardián IDE - Lenguaje de Ciberseguridad</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="real_time_validation.css">
+    <link rel="stylesheet" href="custom_bot_form.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <h1>Guardián IDE</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="helpBtn">
+                        <i class="fas fa-question-circle"></i>
+                        Ayuda
+                    </button>
+                    <button class="btn btn-primary" id="docsBtn">
+                        <i class="fas fa-book"></i>
+                        Documentación
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Análisis y Gestión -->
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-chart-bar"></i> Análisis y Gestión</h3>
+                    <div class="command-list">
+                        <div class="command-item" data-command="analizar puertos de 192.168.1.1">
+                            <span class="command-name">analizar puertos</span>
+                            <span class="command-desc">Escanear puertos de una IP</span>
+                        </div>
+                        <div class="command-item" data-command="monitorear trafico en eth0">
+                            <span class="command-name">monitorear trafico</span>
+                            <span class="command-desc">Monitorear tráfico de red</span>
+                        </div>
+                        <div class="command-item" data-command="leer logs de /var/log/syslog">
+                            <span class="command-name">leer logs</span>
+                            <span class="command-desc">Leer archivos de log</span>
+                        </div>
+                        <div class="command-item" data-command="ver procesos activos">
+                            <span class="command-name">ver procesos</span>
+                            <span class="command-desc">Listar procesos activos</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Programación de Escudos y Seguridad -->
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-shield-alt"></i> Escudos y Seguridad</h3>
+                    <div class="command-list">
+                        <div class="command-item" data-command="crear regla firewall puerto: 22 protocolo: TCP accion: bloquear">
+                            <span class="command-name">crear regla firewall</span>
+                            <span class="command-desc">Crear regla de firewall</span>
+                        </div>
+                        <div class="command-item" data-command="alertar \"Intrusión detectada\" nivel: alto">
+                            <span class="command-name">alertar</span>
+                            <span class="command-desc">Enviar alerta de seguridad</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Programación y Gestión IA -->
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-brain"></i> Programación y Gestión IA</h3>
+                    <div class="command-list">
+                        <div class="command-item" data-command="analizar amenazas en tiempo real en eth0">
+                            <span class="command-name">analizar amenazas IA</span>
+                            <span class="command-desc">Análisis de amenazas con IA</span>
+                        </div>
+                        <div class="command-item" data-command="detectar anomalias en trafico de eth0">
+                            <span class="command-name">detectar anomalias</span>
+                            <span class="command-desc">Detección de anomalías con IA</span>
+                        </div>
+                        <div class="command-item" data-command="evaluar vulnerabilidades de 192.168.1.0/24">
+                            <span class="command-name">evaluar vulnerabilidades</span>
+                            <span class="command-desc">Escaneo inteligente de vulnerabilidades</span>
+                        </div>
+                        <div class="command-item" data-command="predecir ataques">
+                            <span class="command-name">predecir ataques</span>
+                            <span class="command-desc">Predicción de ataques con IA</span>
+                        </div>
+                        <div class="command-item" data-command="generar reglas firewall inteligentes para web_server">
+                            <span class="command-name">generar reglas IA</span>
+                            <span class="command-desc">Generación inteligente de reglas</span>
+                        </div>
+                        <div class="command-item" data-command="optimizar politicas de seguridad">
+                            <span class="command-name">optimizar politicas</span>
+                            <span class="command-desc">Optimización automática con IA</span>
+                        </div>
+                        <div class="command-item" data-command="monitorear con ia la red eth0">
+                            <span class="command-name">monitoreo IA</span>
+                            <span class="command-desc">Monitoreo avanzado con IA</span>
+                        </div>
+                        <div class="command-item" data-command="generar informe de riesgo con ia">
+                            <span class="command-name">informe de riesgo</span>
+                            <span class="command-desc">Informe de riesgo generado por IA</span>
+                        </div>
+                        <div class="command-item" data-command="recomendar acciones de mitigacion">
+                            <span class="command-name">recomendaciones IA</span>
+                            <span class="command-desc">Recomendaciones de mitigación</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crear Bots -->
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-robot"></i> Crear Bots</h3>
+                    <div class="bot-templates">
+                        <div class="bot-template-item" onclick="startBotCreation('network_monitoring_bot')">
+                            <div class="bot-template-icon">📡</div>
+                            <div class="bot-template-info">
+                                <span class="bot-template-name">Bot de Monitoreo de Red</span>
+                                <span class="bot-template-desc">Vigilancia automática de tráfico</span>
+                            </div>
+                        </div>
+                        <div class="bot-template-item" onclick="startBotCreation('incident_response_bot')">
+                            <div class="bot-template-icon">🚨</div>
+                            <div class="bot-template-info">
+                                <span class="bot-template-name">Bot de Respuesta a Incidentes</span>
+                                <span class="bot-template-desc">Respuesta automática a amenazas</span>
+                            </div>
+                        </div>
+                        <div class="bot-template-item" onclick="showAllBotTemplates()">
+                            <div class="bot-template-icon">📋</div>
+                            <div class="bot-template-info">
+                                <span class="bot-template-name">Ver Todas las Plantillas</span>
+                                <span class="bot-template-desc">Explorar plantillas disponibles</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ejemplos -->
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-code"></i> Ejemplos</h3>
+                    <div class="example-list">
+                        <div class="example-item" data-example="basic">
+                            <span class="example-name">Comandos Básicos</span>
+                        </div>
+                        <div class="example-item" data-example="firewall">
+                            <span class="example-name">Configuración Firewall</span>
+                        </div>
+                        <div class="example-item" data-example="monitoring">
+                            <span class="example-name">Monitoreo de Red</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Editor Area -->
+            <div class="editor-container">
+                <div class="editor-header">
+                    <div class="editor-tabs">
+                        <div class="tab active" data-tab="editor">
+                            <i class="fas fa-edit"></i>
+                            Editor
+                        </div>
+                        <div class="tab" data-tab="output">
+                            <i class="fas fa-terminal"></i>
+                            Salida
+                        </div>
+                        <div class="tab" data-tab="ai-dashboard">
+                            <i class="fas fa-robot"></i>
+                            Dashboard IA
+                        </div>
+                        <div class="tab" data-tab="bot-creator">
+                            <i class="fas fa-magic"></i>
+                            Crear Bot
+                        </div>
+                        <div class="tab" data-tab="docs">
+                            <i class="fas fa-book-open"></i>
+                            Documentación
+                        </div>
+                    </div>
+                    <div class="editor-actions">
+                        <button class="btn btn-success" id="runBtn">
+                            <i class="fas fa-play"></i>
+                            Ejecutar
+                        </button>
+                        <button class="btn btn-secondary" id="clearBtn">
+                            <i class="fas fa-trash"></i>
+                            Limpiar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="editor-content">
+                    <!-- Editor Tab -->
+                    <div class="tab-content active" id="editor-tab">
+                        <div class="editor-wrapper">
+                            <div class="code-editor">
+                                <div class="line-numbers" id="lineNumbers">1</div>
+                                <textarea 
+                                    id="codeEditor" 
+                                    placeholder="Escribe tus comandos de Guardián aquí...&#10;&#10;Ejemplo:&#10;analizar puertos de 192.168.1.1&#10;crear regla firewall puerto: 22 protocolo: TCP accion: bloquear&#10;&#10;💡 Usa Ctrl+Space para autocompletado"
+                                    spellcheck="false"
+                                ></textarea>
+                                <!-- Autocompletado Dropdown -->
+                                <div id="autocompleteDropdown" class="autocomplete-dropdown hidden">
+                                    <div class="autocomplete-list"></div>
+                                </div>
+                                <!-- Indicadores de Error de Sintaxis -->
+                                <div id="syntaxErrors" class="syntax-errors"></div>
+                            </div>
+                            <!-- Panel de Ayuda Contextual -->
+                            <div id="contextualHelp" class="contextual-help">
+                                <div class="help-header">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Ayuda Contextual</span>
+                                </div>
+                                <div class="help-content">
+                                    <p>Selecciona un comando para ver información detallada.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Tab -->
+                    <div class="tab-content" id="output-tab">
+                        <div class="output-container">
+                            <div class="output-header">
+                                <span><i class="fas fa-terminal"></i> Salida de Ejecución</span>
+                                <button class="btn btn-sm" id="clearOutputBtn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="output-content" id="outputContent">
+                                <div class="output-welcome">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <p>Bienvenido a Guardián IDE</p>
+                                    <p>Ejecuta comandos para ver la salida aquí</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Dashboard Tab -->
+                    <div class="tab-content" id="ai-dashboard-tab">
+                        <div class="ai-dashboard">
+                            <div class="dashboard-header">
+                                <h2><i class="fas fa-robot"></i> Dashboard de Inteligencia Artificial</h2>
+                                <p>Monitoreo y análisis de seguridad en tiempo real con IA</p>
+                            </div>
+                            
+                            <div class="dashboard-grid">
+                                <!-- Métricas de Seguridad -->
+                                <div class="dashboard-card">
+                                    <div class="card-header">
+                                        <h3><i class="fas fa-shield-alt"></i> Nivel de Amenaza</h3>
+                                        <span class="status-badge status-medium" id="threatLevel">MEDIO</span>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="metric-display">
+                                            <div class="metric-value" id="threatScore">6.2</div>
+                                            <div class="metric-label">Puntuación de Riesgo</div>
+                                        </div>
+                                        <div class="metric-chart">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 62%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Análisis de Tráfico -->
+                                <div class="dashboard-card">
+                                    <div class="card-header">
+                                        <h3><i class="fas fa-network-wired"></i> Análisis de Tráfico</h3>
+                                        <button class="btn btn-sm btn-primary" id="refreshTrafficBtn">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="traffic-metrics">
+                                            <div class="traffic-metric">
+                                                <span class="metric-label">Paquetes/seg</span>
+                                                <span class="metric-value" id="packetsPerSec">1,247</span>
+                                            </div>
+                                            <div class="traffic-metric">
+                                                <span class="metric-label">Conexiones</span>
+                                                <span class="metric-value" id="activeConnections">89</span>
+                                            </div>
+                                            <div class="traffic-metric">
+                                                <span class="metric-label">Anomalías</span>
+                                                <span class="metric-value anomaly" id="anomaliesCount">3</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Predicciones de IA -->
+                                <div class="dashboard-card">
+                                    <div class="card-header">
+                                        <h3><i class="fas fa-crystal-ball"></i> Predicciones de IA</h3>
+                                        <span class="confidence-badge" id="aiConfidence">85%</span>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="prediction-list" id="predictionsList">
+                                            <div class="prediction-item">
+                                                <div class="prediction-type">Escaneo de Puertos</div>
+                                                <div class="prediction-probability">72%</div>
+                                                <div class="prediction-timeframe">Próximas 4h</div>
+                                            </div>
+                                            <div class="prediction-item">
+                                                <div class="prediction-type">Actividad Sospechosa</div>
+                                                <div class="prediction-probability">45%</div>
+                                                <div class="prediction-timeframe">Próximas 24h</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Vulnerabilidades -->
+                                <div class="dashboard-card">
+                                    <div class="card-header">
+                                        <h3><i class="fas fa-bug"></i> Vulnerabilidades</h3>
+                                        <button class="btn btn-sm btn-warning" id="scanVulnBtn">
+                                            <i class="fas fa-search"></i> Escanear
+                                        </button>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="vuln-summary">
+                                            <div class="vuln-item critical">
+                                                <span class="vuln-count" id="criticalVulns">2</span>
+                                                <span class="vuln-label">Críticas</span>
+                                            </div>
+                                            <div class="vuln-item high">
+                                                <span class="vuln-count" id="highVulns">5</span>
+                                                <span class="vuln-label">Altas</span>
+                                            </div>
+                                            <div class="vuln-item medium">
+                                                <span class="vuln-count" id="mediumVulns">12</span>
+                                                <span class="vuln-label">Medias</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Recomendaciones de IA -->
+                                <div class="dashboard-card full-width">
+                                    <div class="card-header">
+                                        <h3><i class="fas fa-lightbulb"></i> Recomendaciones de IA</h3>
+                                        <button class="btn btn-sm btn-success" id="generateRecommendationsBtn">
+                                            <i class="fas fa-magic"></i> Generar
+                                        </button>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="recommendations-list" id="recommendationsList">
+                                            <div class="recommendation-item priority-high">
+                                                <div class="recommendation-icon">
+                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                </div>
+                                                <div class="recommendation-content">
+                                                    <div class="recommendation-title">Aplicar parches críticos de seguridad</div>
+                                                    <div class="recommendation-desc">Se han detectado 2 vulnerabilidades críticas que requieren atención inmediata</div>
+                                                    <div class="recommendation-timeline">Timeline: 24 horas</div>
+                                                </div>
+                                                <div class="recommendation-priority">ALTA</div>
+                                            </div>
+                                            <div class="recommendation-item priority-medium">
+                                                <div class="recommendation-icon">
+                                                    <i class="fas fa-shield-alt"></i>
+                                                </div>
+                                                <div class="recommendation-content">
+                                                    <div class="recommendation-title">Optimizar reglas de firewall</div>
+                                                    <div class="recommendation-desc">Se pueden consolidar 15 reglas redundantes para mejorar el rendimiento</div>
+                                                    <div class="recommendation-timeline">Timeline: 1 semana</div>
+                                                </div>
+                                                <div class="recommendation-priority">MEDIA</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Acciones Rápidas de IA -->
+                                <div class="dashboard-card full-width">
+                                    <div class="card-header">
+                                        <h3><i class="fas fa-bolt"></i> Acciones Rápidas de IA</h3>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="quick-actions">
+                                            <button class="quick-action-btn" data-ai-action="analyze-threats">
+                                                <i class="fas fa-search"></i>
+                                                <span>Analizar Amenazas</span>
+                                            </button>
+                                            <button class="quick-action-btn" data-ai-action="generate-firewall-rules">
+                                                <i class="fas fa-shield-alt"></i>
+                                                <span>Generar Reglas</span>
+                                            </button>
+                                            <button class="quick-action-btn" data-ai-action="predict-attacks">
+                                                <i class="fas fa-crystal-ball"></i>
+                                                <span>Predecir Ataques</span>
+                                            </button>
+                                            <button class="quick-action-btn" data-ai-action="optimize-policies">
+                                                <i class="fas fa-cogs"></i>
+                                                <span>Optimizar Políticas</span>
+                                            </button>
+                                            <button class="quick-action-btn" data-ai-action="generate-report">
+                                                <i class="fas fa-file-alt"></i>
+                                                <span>Generar Informe</span>
+                                            </button>
+                                            <button class="quick-action-btn" data-ai-action="recommend-mitigation">
+                                                <i class="fas fa-first-aid"></i>
+                                                <span>Recomendar Mitigación</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bot Creator Tab -->
+                    <div class="tab-content" id="bot-creator-tab">
+                        <div class="bot-creator-container">
+                            <div class="bot-creator-header">
+                                <h2><i class="fas fa-magic"></i> Asistente de Creación de Bots</h2>
+                                <p>Crea bots de ciberseguridad personalizados con la ayuda de IA</p>
+                            </div>
+
+                            <!-- Selección de Plantilla -->
+                            <div class="bot-step" id="template-selection">
+                                <h3>1. Selecciona el Tipo de Bot</h3>
+                                <div class="template-grid">
+                                    <div class="template-card" data-template="network_monitoring_bot">
+                                        <div class="template-icon">📡</div>
+                                        <h4>Bot de Monitoreo de Red</h4>
+                                        <p>Vigila el tráfico de red y detecta amenazas automáticamente</p>
+                                        <div class="template-tags">
+                                            <span class="tag">Monitoreo</span>
+                                            <span class="tag">DDoS</span>
+                                            <span class="tag">Tráfico</span>
+                                        </div>
+                                    </div>
+                                    <div class="template-card" data-template="incident_response_bot">
+                                        <div class="template-icon">🚨</div>
+                                        <h4>Bot de Respuesta a Incidentes</h4>
+                                        <p>Responde automáticamente a incidentes de seguridad</p>
+                                        <div class="template-tags">
+                                            <span class="tag">Respuesta</span>
+                                            <span class="tag">Contención</span>
+                                            <span class="tag">Forense</span>
+                                        </div>
+                                    </div>
+                                    <div class="template-card" data-template="custom_bot">
+                                        <div class="template-icon">⚙️</div>
+                                        <h4>Bot Personalizado</h4>
+                                        <p>Crea un bot personalizado con IA como guía</p>
+                                        <div class="template-tags">
+                                            <span class="tag">Personalizado</span>
+                                            <span class="tag">IA</span>
+                                            <span class="tag">Flexible</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Conversación con IA -->
+                            <div class="bot-step hidden" id="ai-conversation">
+                                <h3>2. Configuración con Asistente de IA</h3>
+                                <div class="conversation-container">
+                                    <div class="conversation-messages" id="conversationMessages">
+                                        <!-- Los mensajes se agregarán dinámicamente -->
+                                    </div>
+                                    <div class="conversation-input">
+                                        <input type="text" id="userResponseInput" placeholder="Escribe tu respuesta aquí..." />
+                                        <button id="sendResponseBtn">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </div>
+                                    <div class="conversation-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" id="conversationProgress"></div>
+                                        </div>
+                                        <span class="progress-text" id="progressText">0% completado</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Formulario Personalizado -->
+                            <div class="bot-step hidden" id="custom-form">
+                                <h3>2. Configura tu Bot Personalizado</h3>
+                                <div class="custom-bot-form">
+                                    <!-- Información Básica -->
+                                    <div class="form-section">
+                                        <h4><i class="fas fa-info-circle"></i> Información Básica</h4>
+                                        <div class="form-group">
+                                            <label for="botName">Nombre del Bot *</label>
+                                            <input type="text" id="botName" placeholder="Ej: Bot de Análisis de Logs" required />
+                                            <small>Nombre único para identificar tu bot</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="botDescription">Descripción *</label>
+                                            <textarea id="botDescription" placeholder="Describe qué hace tu bot..." rows="3" required></textarea>
+                                            <small>Explicación clara de la funcionalidad</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tipo de Funcionalidad -->
+                                    <div class="form-section">
+                                        <h4><i class="fas fa-cogs"></i> Tipo de Funcionalidad</h4>
+                                        <div class="form-group">
+                                            <label>Selecciona las funcionalidades principales *</label>
+                                            <div class="checkbox-group">
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="functionality" value="monitoring" />
+                                                    <span>Monitoreo en tiempo real</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="functionality" value="detection" />
+                                                    <span>Detección de amenazas</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="functionality" value="response" />
+                                                    <span>Respuesta automática</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="functionality" value="analysis" />
+                                                    <span>Análisis y reportes</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="functionality" value="prediction" />
+                                                    <span>Predicción con IA</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="functionality" value="automation" />
+                                                    <span>Automatización</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Datos de Entrada -->
+                                    <div class="form-section">
+                                        <h4><i class="fas fa-arrow-right"></i> Datos de Entrada</h4>
+                                        <div class="form-group">
+                                            <label>¿De dónde obtiene datos el bot? *</label>
+                                            <div class="checkbox-group">
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="input_source" value="network" />
+                                                    <span>Tráfico de red</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="input_source" value="logs" />
+                                                    <span>Archivos de log</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="input_source" value="api" />
+                                                    <span>APIs externas</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="input_source" value="database" />
+                                                    <span>Base de datos</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="input_source" value="system" />
+                                                    <span>Eventos del sistema</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Acciones del Bot -->
+                                    <div class="form-section">
+                                        <h4><i class="fas fa-tasks"></i> Acciones que Realiza</h4>
+                                        <div class="form-group">
+                                            <label>¿Qué acciones debe realizar el bot? *</label>
+                                            <div class="checkbox-group">
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="actions" value="alert" />
+                                                    <span>Enviar alertas</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="actions" value="block" />
+                                                    <span>Bloquear amenazas</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="actions" value="log" />
+                                                    <span>Registrar eventos</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="actions" value="report" />
+                                                    <span>Generar reportes</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="actions" value="notify" />
+                                                    <span>Notificar a usuarios</span>
+                                                </label>
+                                                <label class="checkbox-item">
+                                                    <input type="checkbox" name="actions" value="remediate" />
+                                                    <span>Remediar automáticamente</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Nivel de Inteligencia -->
+                                    <div class="form-section">
+                                        <h4><i class="fas fa-brain"></i> Nivel de Inteligencia</h4>
+                                        <div class="form-group">
+                                            <label for="aiLevel">¿Qué nivel de IA deseas? *</label>
+                                            <select id="aiLevel" required>
+                                                <option value="">Selecciona un nivel...</option>
+                                                <option value="basic">Básico - Reglas simples</option>
+                                                <option value="intermediate">Intermedio - Machine Learning</option>
+                                                <option value="advanced">Avanzado - Deep Learning</option>
+                                                <option value="expert">Experto - IA Generativa</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Parámetros Avanzados -->
+                                    <div class="form-section">
+                                        <h4><i class="fas fa-sliders-h"></i> Parámetros Avanzados</h4>
+                                        <div class="form-group">
+                                            <label for="updateFrequency">Frecuencia de actualización *</label>
+                                            <select id="updateFrequency" required>
+                                                <option value="realtime">Tiempo real</option>
+                                                <option value="1min">Cada 1 minuto</option>
+                                                <option value="5min">Cada 5 minutos</option>
+                                                <option value="15min">Cada 15 minutos</option>
+                                                <option value="1hour">Cada hora</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sensitivity">Sensibilidad de detección *</label>
+                                            <input type="range" id="sensitivity" min="1" max="10" value="5" />
+                                            <div class="range-labels">
+                                                <span>Baja</span>
+                                                <span id="sensitivityValue">5</span>
+                                                <span>Alta</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="checkbox-item">
+                                                <input type="checkbox" id="enableLogging" checked />
+                                                <span>Habilitar registro detallado</span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="checkbox-item">
+                                                <input type="checkbox" id="enableNotifications" checked />
+                                                <span>Habilitar notificaciones</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Asistencia de IA -->
+                                    <div class="form-section ai-assistance">
+                                        <h4><i class="fas fa-lightbulb"></i> Asistencia de IA</h4>
+                                        <div class="ai-suggestions" id="aiSuggestions">
+                                            <p class="ai-message">Completa el formulario para recibir sugerencias de IA...</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Botones de Acción -->
+                                    <div class="form-actions">
+                                        <button class="btn btn-secondary" id="backToTemplateBtn">
+                                            <i class="fas fa-arrow-left"></i> Atrás
+                                        </button>
+                                        <button class="btn btn-primary" id="generateCustomBotBtn">
+                                            <i class="fas fa-magic"></i> Generar Bot
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Resultado Final -->
+                            <div class="bot-step hidden" id="bot-result">
+                                <h3>3. Bot Generado</h3>
+                                <div class="bot-result-container">
+                                    <div class="bot-metadata">
+                                        <h4>Información del Bot</h4>
+                                        <div class="metadata-grid" id="botMetadata">
+                                            <!-- Metadata se llenará dinámicamente -->
+                                        </div>
+                                    </div>
+                                    <div class="bot-code-container">
+                                        <div class="code-header">
+                                            <h4>Código Generado</h4>
+                                            <div class="code-actions">
+                                                <button class="btn btn-sm btn-primary" id="copyBotCodeBtn">
+                                                    <i class="fas fa-copy"></i> Copiar
+                                                </button>
+                                                <button class="btn btn-sm btn-success" id="insertBotCodeBtn">
+                                                    <i class="fas fa-plus"></i> Insertar en Editor
+                                                </button>
+                                                <button class="btn btn-sm btn-secondary" id="downloadBotBtn">
+                                                    <i class="fas fa-download"></i> Descargar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="generated-code" id="generatedBotCode">
+                                            <!-- El código se mostrará aquí -->
+                                        </div>
+                                    </div>
+                                    <div class="bot-validation" id="botValidation">
+                                        <!-- Resultados de validación se mostrarán aquí -->
+                                    </div>
+                                </div>
+                                <div class="bot-actions">
+                                    <button class="btn btn-primary" id="createAnotherBotBtn">
+                                        <i class="fas fa-plus"></i> Crear Otro Bot
+                                    </button>
+                                    <button class="btn btn-secondary" id="saveBotConfigBtn">
+                                        <i class="fas fa-save"></i> Guardar Configuración
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Documentation Tab -->
+                    <div class="tab-content" id="docs-tab">
+                        <div class="docs-container">
+                            <div class="docs-content">
+                                <h2><i class="fas fa-shield-alt"></i> Lenguaje Guardián</h2>
+                                <p>Guardián es un lenguaje pseudonatural diseñado específicamente para tareas de ciberseguridad. Su sintaxis intuitiva permite a los profesionales de seguridad ejecutar comandos complejos de manera sencilla.</p>
+                                
+                                <h3><i class="fas fa-robot"></i> Comandos de IA</h3>
+                                
+                                <div class="command-doc">
+                                    <h4>analizar amenazas en tiempo real en &lt;INTERFAZ&gt;</h4>
+                                    <p>Realiza análisis de amenazas en tiempo real usando inteligencia artificial.</p>
+                                    <div class="code-example">analizar amenazas en tiempo real en eth0</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>detectar anomalias en trafico de &lt;INTERFAZ&gt;</h4>
+                                    <p>Detecta anomalías en el tráfico de red usando algoritmos de machine learning.</p>
+                                    <div class="code-example">detectar anomalias en trafico de eth0</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>evaluar vulnerabilidades de &lt;RANGO_IP&gt;</h4>
+                                    <p>Evalúa vulnerabilidades en un rango de IPs con análisis inteligente.</p>
+                                    <div class="code-example">evaluar vulnerabilidades de 192.168.1.0/24</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>predecir ataques [basado en patrones historicos]</h4>
+                                    <p>Predice posibles ataques basándose en patrones históricos y análisis de IA.</p>
+                                    <div class="code-example">predecir ataques basado en patrones historicos</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>generar reglas firewall inteligentes para &lt;CONTEXTO&gt;</h4>
+                                    <p>Genera reglas de firewall automáticamente basadas en el contexto del sistema.</p>
+                                    <div class="code-example">generar reglas firewall inteligentes para web_server</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>optimizar politicas de seguridad [automaticamente]</h4>
+                                    <p>Optimiza las políticas de seguridad existentes usando análisis de IA.</p>
+                                    <div class="code-example">optimizar politicas de seguridad automaticamente</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>monitorear con ia la red &lt;INTERFAZ&gt;</h4>
+                                    <p>Monitorea la red con capacidades avanzadas de inteligencia artificial.</p>
+                                    <div class="code-example">monitorear con ia la red eth0</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>alertar con contexto inteligente sobre &lt;TIPO_AMENAZA&gt;</h4>
+                                    <p>Genera alertas con contexto inteligente sobre tipos específicos de amenazas.</p>
+                                    <div class="code-example">alertar con contexto inteligente sobre malware</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>generar informe de riesgo con ia</h4>
+                                    <p>Genera un informe completo de riesgo usando análisis de inteligencia artificial.</p>
+                                    <div class="code-example">generar informe de riesgo con ia</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>recomendar acciones de mitigacion</h4>
+                                    <p>Recomienda acciones específicas de mitigación basadas en el análisis de IA.</p>
+                                    <div class="code-example">recomendar acciones de mitigacion</div>
+                                </div>
+
+                                <h3><i class="fas fa-list"></i> Comandos Básicos</h3>
+                                
+                                <div class="command-doc">
+                                    <h4>analizar puertos de &lt;IP&gt;</h4>
+                                    <p>Realiza un escaneo de puertos en la dirección IP especificada.</p>
+                                    <div class="code-example">analizar puertos de 192.168.1.1</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>crear regla firewall puerto: &lt;PUERTO&gt; protocolo: &lt;TCP|UDP&gt; accion: &lt;bloquear|permitir&gt;</h4>
+                                    <p>Crea una nueva regla de firewall para el puerto y protocolo especificados.</p>
+                                    <div class="code-example">crear regla firewall puerto: 22 protocolo: TCP accion: bloquear</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>leer logs de &lt;RUTA&gt;</h4>
+                                    <p>Lee y muestra el contenido de un archivo de log.</p>
+                                    <div class="code-example">leer logs de /var/log/syslog</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>monitorear trafico en &lt;INTERFAZ&gt;</h4>
+                                    <p>Inicia el monitoreo de tráfico de red en la interfaz especificada.</p>
+                                    <div class="code-example">monitorear trafico en eth0</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>alertar &lt;MENSAJE&gt;</h4>
+                                    <p>Envía una alerta de seguridad con el mensaje especificado.</p>
+                                    <div class="code-example">alertar "Intrusión detectada"</div>
+                                </div>
+
+                                <div class="command-doc">
+                                    <h4>ver procesos activos</h4>
+                                    <p>Muestra una lista de todos los procesos activos en el sistema.</p>
+                                    <div class="code-example">ver procesos activos</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Status Bar -->
+        <footer class="status-bar">
+            <div class="status-left">
+                <span class="status-item">
+                    <i class="fas fa-circle status-online"></i>
+                    Guardián IDE v1.0
+                </span>
+                <span class="status-item" id="lineCol">Línea 1, Columna 1</span>
+            </div>
+            <div class="status-right">
+                <span class="status-item">Lenguaje: Guardián</span>
+                <span class="status-item" id="commandCount">Comandos: 0</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-question-circle"></i> Ayuda - Guardián IDE</h3>
+                <button class="modal-close" id="closeHelpModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>Atajos de Teclado</h4>
+                <ul>
+                    <li><kbd>Ctrl + Enter</kbd> - Ejecutar código</li>
+                    <li><kbd>Ctrl + L</kbd> - Limpiar editor</li>
+                    <li><kbd>F1</kbd> - Mostrar ayuda</li>
+                    <li><kbd>Tab</kbd> - Autocompletar comando</li>
+                </ul>
+                
+                <h4>Consejos</h4>
+                <ul>
+                    <li>Haz clic en los comandos de la barra lateral para insertarlos automáticamente</li>
+                    <li>Usa comillas dobles para mensajes con espacios</li>
+                    <li>Los comandos son sensibles a la sintaxis exacta</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="autocomplete.js"></script>
+    <script src="real_time_validation.js"></script>
+    <script src="custom_bot_form.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,209 @@
+{
+  "template_info": {
+    "id": "network_monitoring_bot",
+    "name": "Bot de Monitoreo de Red",
+    "description": "Bot especializado en el monitoreo continuo del tráfico de red, detección de anomalías y respuesta automática a ataques DDoS y escaneos de puertos.",
+    "category": "network_monitoring",
+    "difficulty": "intermediate",
+    "version": "1.0.0",
+    "author": "Guardián AI",
+    "tags": ["network", "monitoring", "ddos", "traffic", "security"]
+  },
+  "parameters": {
+    "bot_name": {
+      "type": "string",
+      "description": "Nombre identificativo del bot",
+      "default": "Guardián de Red",
+      "required": true,
+      "ai_question": "¿Cómo quieres llamar a tu bot de monitoreo de red?",
+      "ai_suggestions": ["Guardián de Red", "Monitor de Tráfico", "Centinela Digital", "Vigilante de Red"]
+    },
+    "interface": {
+      "type": "interface",
+      "description": "Interfaz de red a monitorear",
+      "default": "eth0",
+      "required": true,
+      "ai_question": "¿Qué interfaz de red deseas monitorear?",
+      "ai_suggestions": ["eth0", "wlan0", "enp0s3", "lo"]
+    },
+    "attack_threshold": {
+      "type": "integer",
+      "description": "Umbral de paquetes por segundo para detectar ataques DDoS",
+      "default": 1000,
+      "required": true,
+      "validation": {
+        "min": 100,
+        "max": 10000
+      },
+      "ai_question": "¿Cuál es el umbral de paquetes por segundo que consideras como posible ataque DDoS?",
+      "ai_suggestions": ["500 (red pequeña)", "1000 (red mediana)", "2000 (red grande)", "5000 (red empresarial)"]
+    },
+    "allowed_ips": {
+      "type": "array",
+      "description": "Lista de IPs permitidas (lista blanca)",
+      "default": ["192.168.1.1", "192.168.1.2"],
+      "required": false,
+      "ai_question": "¿Hay IPs específicas que siempre deben ser consideradas como seguras? (opcional)",
+      "ai_suggestions": ["IPs de administradores", "Servidores internos", "Gateways de red"]
+    },
+    "monitoring_duration": {
+      "type": "string",
+      "description": "Duración del monitoreo",
+      "default": "continuo",
+      "required": true,
+      "validation": {
+        "enum": ["continuo", "1h", "8h", "24h", "programado"]
+      },
+      "ai_question": "¿Por cuánto tiempo debe ejecutarse el monitoreo?",
+      "ai_suggestions": ["continuo", "8 horas (turno laboral)", "24 horas (día completo)"]
+    },
+    "alert_level": {
+      "type": "string",
+      "description": "Nivel mínimo de alerta para activar respuestas",
+      "default": "alto",
+      "required": true,
+      "validation": {
+        "enum": ["bajo", "medio", "alto", "critico"]
+      },
+      "ai_question": "¿A partir de qué nivel de amenaza debe activarse la respuesta automática?",
+      "ai_suggestions": ["medio (más sensible)", "alto (balanceado)", "crítico (solo amenazas graves)"]
+    }
+  },
+  "components": [
+    {
+      "id": "traffic_monitor",
+      "type": "MONITOREO_TRAFICO",
+      "name": "Monitor de Tráfico",
+      "description": "Componente que monitorea el tráfico de red en tiempo real",
+      "config": {
+        "interfaz": "{interface}",
+        "duracion": "{monitoring_duration}",
+        "metricas": ["packet_rate", "connection_rate", "bandwidth_usage"]
+      },
+      "dependencies": ["scapy", "psutil"],
+      "guardian_commands": ["monitorear trafico en {interface}", "analizar amenazas en tiempo real en {interface}"],
+      "security_validations": ["validate_interface_exists", "check_monitoring_permissions"]
+    },
+    {
+      "id": "attack_detector",
+      "type": "DETECCION_ATAQUES",
+      "name": "Detector de Ataques",
+      "description": "Componente que detecta patrones de ataque basándose en umbrales y listas blancas",
+      "config": {
+        "umbral": "{attack_threshold}",
+        "lista_blanca": "{allowed_ips}",
+        "tipos_ataque": ["ddos", "port_scan", "syn_flood"]
+      },
+      "dependencies": ["numpy"],
+      "guardian_commands": ["detectar anomalias en trafico de {interface}"],
+      "security_validations": ["validate_threshold_range", "validate_ip_whitelist"]
+    },
+    {
+      "id": "auto_response",
+      "type": "RESPUESTA_AUTOMATICA",
+      "name": "Respuesta Automática",
+      "description": "Componente que ejecuta acciones automáticas ante la detección de amenazas",
+      "config": {
+        "acciones": [
+          "alertar 'Ataque DDoS detectado desde {ip_origen}' nivel: {alert_level}",
+          "crear regla firewall puerto: * protocolo: * accion: bloquear origen: {ip_origen}",
+          "monitorear con ia la red {interface}"
+        ]
+      },
+      "dependencies": [],
+      "guardian_commands": ["alertar", "crear regla firewall", "monitorear con ia"],
+      "security_validations": ["validate_firewall_rules", "prevent_self_blocking"]
+    }
+  ],
+  "triggers": [
+    {
+      "type": "INICIO_SISTEMA",
+      "config": {
+        "auto_start": true
+      },
+      "condition": "system_boot_complete"
+    },
+    {
+      "type": "DETECCION_ALERTA",
+      "config": {
+        "nivel_minimo": "{alert_level}"
+      },
+      "condition": "threat_level >= {alert_level}"
+    }
+  ],
+  "code_template": "# Bot de Monitoreo de Red: {bot_name}\n# Generado automáticamente por Guardián AI\n\n# Configuración del bot\ncrear bot {bot_name}\n    con interfaz: \"{interface}\"\n    umbral_ataque: {attack_threshold}\n    ips_permitidas: {allowed_ips}\n    duracion: \"{monitoring_duration}\"\n    nivel_alerta: \"{alert_level}\"\n\n# Inicialización del monitoreo\nmonitorear trafico en {interface}\n\n# Bucle principal de monitoreo\nrepetir mientras activo:\n    # Análisis de amenazas en tiempo real\n    analizar amenazas en tiempo real en {interface}\n    \n    # Detección de anomalías\n    detectar anomalias en trafico de {interface}\n    \n    # Si se detecta ataque DDoS\n    si paquetes_por_segundo > {attack_threshold} entonces\n        si ip_origen no en {allowed_ips} entonces\n            alertar \"Ataque DDoS detectado desde \" + ip_origen + \" en {interface}\" nivel: {alert_level}\n            crear regla firewall puerto: * protocolo: * accion: bloquear origen: ip_origen\n            monitorear con ia la red {interface}\n        fin si\n    fin si\n    \n    # Esperar intervalo de monitoreo\n    esperar 5 segundos\nfin repetir\n\n# Limpieza al finalizar\nalertار \"Bot {bot_name} finalizado\" nivel: info",
+  "ai_prompts": {
+    "initial_question": "¡Hola! Voy a ayudarte a crear un bot de monitoreo de red personalizado. Este bot vigilará el tráfico de tu red y responderá automáticamente a amenazas como ataques DDoS. ¿Estás listo para comenzar?",
+    "follow_up_questions": [
+      "Basándome en tu configuración, recomiendo también monitorear el puerto 22 (SSH) ya que es común objetivo de ataques. ¿Te gustaría añadir esta protección?",
+      "Para mejorar la precisión, ¿tienes algún patrón de tráfico normal en tu red que deba considerar?",
+      "¿Deseas que el bot genere reportes periódicos de la actividad de red?"
+    ],
+    "recommendations": [
+      "Para redes empresariales, recomiendo un umbral de al menos 2000 paquetes/segundo",
+      "Considera añadir la IP de tu gateway a la lista blanca para evitar falsos positivos",
+      "El monitoreo continuo es ideal para servidores críticos, pero puede consumir recursos",
+      "Un nivel de alerta 'alto' ofrece un buen balance entre sensibilidad y falsos positivos"
+    ],
+    "validation_prompts": [
+      "Verificando que la interfaz {interface} existe en el sistema...",
+      "Validando que el umbral {attack_threshold} está en un rango seguro...",
+      "Comprobando que las IPs de la lista blanca son válidas...",
+      "Asegurando que las reglas de firewall no bloqueen tráfico legítimo..."
+    ]
+  },
+  "examples": [
+    {
+      "name": "Monitor Básico de Red Doméstica",
+      "description": "Configuración simple para una red doméstica",
+      "parameters": {
+        "bot_name": "Monitor Casa",
+        "interface": "wlan0",
+        "attack_threshold": 500,
+        "allowed_ips": ["192.168.1.1"],
+        "monitoring_duration": "continuo",
+        "alert_level": "medio"
+      }
+    },
+    {
+      "name": "Monitor Empresarial Avanzado",
+      "description": "Configuración robusta para entorno empresarial",
+      "parameters": {
+        "bot_name": "Centinela Corporativo",
+        "interface": "eth0",
+        "attack_threshold": 2000,
+        "allowed_ips": ["10.0.0.1", "10.0.0.2", "10.0.0.10"],
+        "monitoring_duration": "continuo",
+        "alert_level": "alto"
+      }
+    }
+  ],
+  "security_guidelines": [
+    "Nunca bloquear la IP del administrador del sistema",
+    "Validar que la interfaz de red existe antes de iniciar el monitoreo",
+    "Establecer límites razonables en los umbrales para evitar sobrecarga del sistema",
+    "Mantener logs de todas las acciones automáticas para auditoría",
+    "Implementar mecanismo de desactivación de emergencia"
+  ],
+  "testing_scenarios": [
+    {
+      "name": "Simulación de Ataque DDoS",
+      "description": "Simula un ataque DDoS para verificar la respuesta del bot",
+      "input": {
+        "packet_rate": 1500,
+        "source_ip": "203.0.113.1"
+      },
+      "expected_behavior": "El bot debe detectar el ataque, generar una alerta y bloquear la IP origen"
+    },
+    {
+      "name": "Tráfico Normal de Lista Blanca",
+      "description": "Verifica que el tráfico de IPs permitidas no genere alertas",
+      "input": {
+        "packet_rate": 1200,
+        "source_ip": "192.168.1.1"
+      },
+      "expected_behavior": "El bot debe permitir el tráfico sin generar alertas"
+    }
+  ]
+}
+

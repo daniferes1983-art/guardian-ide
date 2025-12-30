@@ -1,0 +1,27 @@
+[Unit]
+Description=Guardián IDE - Cybersecurity Language IDE with AI
+After=network.target
+
+[Service]
+Type=notify
+User=www-data
+WorkingDirectory=/opt/guardian-ide
+Environment="PATH=/opt/guardian-ide/venv/bin"
+Environment="FLASK_ENV=production"
+Environment="PORT=8000"
+ExecStart=/opt/guardian-ide/venv/bin/gunicorn \
+    --bind 0.0.0.0:8000 \
+    --workers 4 \
+    --worker-class sync \
+    --timeout 120 \
+    --access-logfile /var/log/guardian-ide/access.log \
+    --error-logfile /var/log/guardian-ide/error.log \
+    wsgi:app
+
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

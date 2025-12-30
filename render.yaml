@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: guardian-ide
+    runtime: python311
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn --bind 0.0.0.0:$PORT --workers 4 --timeout 120 wsgi:app"
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    plan: free
+    healthCheckPath: /api/health
