@@ -910,6 +910,11 @@ async function sendUserResponse() {
 function addAIMessage(message) {
     const messagesContainer = document.getElementById('conversationMessages');
     
+    if (!messagesContainer) {
+        console.error('conversationMessages container not found');
+        return;
+    }
+    
     const messageDiv = document.createElement('div');
     messageDiv.className = 'message ai';
     messageDiv.innerHTML = `
@@ -925,11 +930,16 @@ function addAIMessage(message) {
 function addUserMessage(message) {
     const messagesContainer = document.getElementById('conversationMessages');
     
+    if (!messagesContainer) {
+        console.error('conversationMessages container not found');
+        return;
+    }
+    
     const messageDiv = document.createElement('div');
     messageDiv.className = 'message user';
     messageDiv.innerHTML = `
         <div class="message-header">👤 Tú</div>
-        <div class="message-content">${message}</div>
+        <div class="message-content">${message.replace(/\n/g, '<br>')}</div>
     `;
     
     messagesContainer.appendChild(messageDiv);
@@ -939,6 +949,11 @@ function addUserMessage(message) {
 // Mostrar indicador de escritura
 function showTypingIndicator() {
     const messagesContainer = document.getElementById('conversationMessages');
+    
+    if (!messagesContainer) {
+        console.error('conversationMessages container not found');
+        return;
+    }
     
     const typingDiv = document.createElement('div');
     typingDiv.className = 'message ai typing-indicator';

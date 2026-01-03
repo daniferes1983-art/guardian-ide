@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
+import time
 from guardian_lexer import GuardianLexer
 from guardian_parser import GuardianParser
 from guardian_interpreter import GuardianInterpreter
@@ -252,6 +253,128 @@ if __name__ == '__main__':
         debug=False  # Set to False for production
     )
 
+
+# Almacenar sesiones activas
+bot_sessions = {}
+
+@app.route('/api/bots/sessions/start', methods=['POST'])
+def start_bot_session():
+    """Inicia una sesión de creación de bot con IA"""
+    try:
+        data = request.get_json()
+        if not data or 'template_id' not in data:
+            return jsonify({
+                'success': False,
+                'error': 'No se proporcionó template_id'
+            }), 400
+        
+        template_id = data['template_id']
+        user_id = data.get('user_id', 'web_user_' + str(int(time.time())))
+        session_id = f"session_{user_id}_{int(time.time())}"
+        
+        # Crear sesión
+        bot_sessions[session_id] = {
+            'template_id': template_id,
+            'user_id': user_id,
+            'messages': [],
+            'created_at': time.time()
+        }
+        
+        # Mensaje inicial según la plantilla
+        if template_id == 'network_monitoring_bot':
+            initial_message = "¡Hola! Voy a ayudarte a crear un Bot de Monitoreo de Red. ¿Cuál es el nombre que deseas para este bot?"
+        elif template_id == 'incident_response_bot':
+            initial_message = "¡Hola! Voy a ayudarte a crear un Bot de Respuesta a Incidentes. ¿Cuál es el nombre que deseas para este bot?"
+        else:
+            initial_message = "¡Hola! Voy a ayudarte a crear tu bot personalizado. ¿Cuál es el nombre que deseas para este bot?"
+        
+        bot_sessions[session_id]['messages'].append({
+            'role': 'assistant',
+            'content': initial_message
+        })
+        
+        return jsonify({
+            'success': True,
+            'session_id': session_id,
+            'message': initial_message
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f'Error al iniciar sesión: {str(e)}'
+        }), 500
+
+@app.route('/api/bots/sessions/<session_id>/message', methods=['POST'])
+def send_bot_message(session_id):
+    """Envía un mensaje a la sesión de creación de bot"""
+    try:
+        if session_id not in bot_sessions:
+            return jsonify({
+                'success': False,
+                'error': 'Sesión no encontrada'
+            }), 404
+        
+        data = request.get_json()
+        if not data or 'message' not in data:
+            return jsonify({
+                'success': False,
+                'error': 'No se proporcionó mensaje'
+            }), 400
+        
+        user_message = data['message']
+        session = bot_sessions[session_id]
+        
+        # Agregar mensaje del usuario
+        session['messages'].append({
+            'role': 'user',
+            'content': user_message
+        })
+        
+        # Generar respuesta de IA
+        ai_response = generate_bot_ai_response(session['template_id'], session['messages'])
+        
+        # Agregar respuesta de IA
+        session['messages'].append({
+            'role': 'assistant',
+            'content': ai_response
+        })
+        
+        return jsonify({
+            'success': True,
+            'message': ai_response
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f'Error al procesar mensaje: {str(e)}'
+        }), 500
+
+def generate_bot_ai_response(template_id, messages):
+    """Genera una respuesta de IA para la sesión de bot"""
+    # Obtener el último mensaje del usuario
+    user_messages = [m for m in messages if m['role'] == 'user']
+    if not user_messages:
+        return "Por favor, proporciona información sobre tu bot."
+    
+    last_user_message = user_messages[-1]['content']
+    message_count = len(user_messages)
+    
+    # Lógica de conversación según el número de mensajes
+    if message_count == 1:
+        # Primer mensaje: confirmar nombre y preguntar función
+        return f"Excelente, '{last_user_message}' es un gran nombre. ¿Cuál es la función principal que deseas que realice este bot? (ej: monitoreo, detección, respuesta)"
+    elif message_count == 2:
+        # Segundo mensaje: preguntar sobre configuración
+        return f"Perfecto, un bot de {last_user_message}. ¿Con qué frecuencia deseas que se ejecute? (ej: cada 5 minutos, cada hora, en tiempo real)"
+    elif message_count == 3:
+        # Tercer mensaje: preguntar sobre acciones
+        return f"Bien, cada {last_user_message}. ¿Qué acciones deseas que realice cuando detecte algo? (ej: enviar alerta, generar reporte, bloquear)"
+    elif message_count == 4:
+        # Cuarto mensaje: confirmación y generación
+        return f"Perfecto. Voy a generar tu bot '{messages[0]['content']}' con las configuraciones que especificaste. ¡Tu bot está listo!"
+    else:
+        # Mensajes posteriores
+        return "¿Hay algo más que desees configurar en tu bot?"
 
 @app.route('/api/custom-bot/suggestions', methods=['POST'])
 def get_custom_bot_suggestions():
